@@ -57,6 +57,53 @@ class FileStorageServiceTest extends TestCase
         $this->assertEquals(69, $loadedEmployee->getAge());
     }
 
+    public function testEditEmployeeFromEmployeeList()
+    {
+        $storageService = $this->getFileStorage();
+
+        $storageService->addEmployee((new EmployeeDTO())
+            ->setName('testName')
+            ->setSex('testSex')
+            ->setAge(69)
+        );
+
+        $loadedEmployee = $storageService->getList()[0];
+        $loadedEmployee->setName('updatedName');
+
+        $storageService->editEmployee(0, $loadedEmployee);
+
+        $editedLoadedEmployee = $storageService->getList()[0];
+
+        $this->assertNotEmpty($storageService->getList());
+        $this->assertEquals('updatedName', $editedLoadedEmployee->getName());
+        $this->assertEquals('testSex', $editedLoadedEmployee->getSex());
+        $this->assertEquals(69, $editedLoadedEmployee->getAge());
+    }
+
+    public function testRemoveEmployeeFromEmployeeList()
+    {
+        $storageService = $this->getFileStorage();
+
+        $storageService->addEmployee((new EmployeeDTO())
+            ->setName('testName')
+            ->setSex('testSex')
+            ->setAge(69)
+        );
+
+        $storageService->addEmployee((new EmployeeDTO())
+            ->setName('testName')
+            ->setSex('testSex')
+            ->setAge(69)
+        );
+
+        $loadedEmployee = $storageService->getList()[0];
+        $loadedEmployee->setName('updatedName');
+
+        $storageService->removeEmployee(0);
+
+        $this->assertCount(1, $storageService->getList());
+    }
+
     private function getFileStorage():FileStorageService
     {
         return new FileStorageService(

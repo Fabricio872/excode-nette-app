@@ -34,6 +34,26 @@ class FileStorageService implements StorageServiceInterface
         return $this;
     }
 
+    public function editEmployee(int $id, EmployeeDTO $employee): StorageServiceInterface
+    {
+        $employeeList = $this->getList();
+        $employeeList[$id] = $employee;
+
+        $this->saveList($employeeList);
+
+        return $this;
+    }
+
+    public function removeEmployee(int $id): StorageServiceInterface
+    {
+        $employeeList = $this->getList();
+        unset($employeeList[$id]);
+
+        $this->saveList($employeeList);
+
+        return $this;
+    }
+
     /**
      * @param array<int, EmployeeDTO> $employeeList
      * @return void

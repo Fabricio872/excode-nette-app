@@ -6,10 +6,12 @@
         <th>Name</th>
         <th>Sex</th>
         <th>Age</th>
+        <th>Action</th>
     </tr>
-    <tr n:foreach="$employeeList as $employee">
+    <tr n:foreach="$employeeList as $id=>$employee">
         <td>{$employee->getName()}</td>
         <td>{$employee->getSex()}</td>
         <td>{$employee->getAge()}</td>
+        <td><a n:href="Employee:edit $id">Edit</a></td>
     </tr>
 </table>

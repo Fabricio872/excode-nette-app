@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\DTO\EmployeeDTO;
+use App\Forms\EmployeeFormFactory;
 use App\Services\FileStorageService;
 use Nette;
 use Nette\Application\UI\Form;
@@ -14,7 +15,8 @@ final class EmployeePresenter extends Nette\Application\UI\Presenter
 {
     public function __construct(
         private FileStorageService $storageService,
-        private ObjectNormalizer   $normalizer
+        private ObjectNormalizer   $normalizer,
+        private EmployeeFormFactory $formFactory
     )
     {
     }
@@ -24,24 +26,44 @@ final class EmployeePresenter extends Nette\Application\UI\Presenter
         $this->template->employeeList = $this->storageService->getList();
     }
 
-    protected function createComponentEmployeeForm(): Form
+    public function renderEdit(int $id): void
     {
-        $form = new Form();
-        $form->addText('name', 'Name:');
-        $form->addText('sex', 'Sex:');
-        $form->addInteger('age', 'Age:');
-        $form->addSubmit('send', 'Add');
-        $form->onSuccess[] = [$this, 'formSucceeded'];
-        $form->onError[] = [$this, 'formError'];
+
+        $this->template->employee = $this->storageService->getList()[$id];
+    }
+
+    protected function createComponentEmployeeAddForm(): Form
+    {
+        $form = $this->formFactory->create();
+        // we can change the form, here for example we change the label on the button
+        $form->onSuccess[] = [$this, 'formAddSucceeded']; // and add handler
         return $form;
     }
 
-    public function formSucceeded(Form $form, $data): void
+    protected function createComponentEmployeeEditForm(): Form
+    {
+        $form = $this->formFactory->create();
+        // we can change the form, here for example we change the label on the button
+        $form->onSuccess[] = [$this, 'formEditSucceeded']; // and add handler
+        $form->setDefaults($this->storageService->getList()[$this->request->getParameter('id')]);
+        return $form;
+    }
+
+    public function formAddSucceeded(Form $form, $data): void
     {
         $employee = $this->normalizer->denormalize($data, EmployeeDTO::class);
         $this->storageService->addEmployee($employee);
 
         $this->flashMessage(sprintf('Employee "%s" successfully added', $employee->getName()));
+        $this->redirect('Employee:index');
+    }
+
+    public function formEditSucceeded(Form $form, $data): void
+    {
+        $employee = $this->normalizer->denormalize($data, EmployeeDTO::class);
+        $this->storageService->editEmployee((int)$this->request->getParameter('id'), $employee);
+
+        $this->flashMessage(sprintf('Employee "%s" successfully edited', $employee->getName()));
         $this->redirect('Employee:index');
     }
 }

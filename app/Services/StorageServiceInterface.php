@@ -12,5 +12,6 @@ interface StorageServiceInterface
     public function getList():array;
 
     public function addEmployee(EmployeeDTO $employee):self;
-//    public function removeEmployee(EmployeeDTO $employee):self;
+    public function editEmployee(int $id, EmployeeDTO $employee):self;
+    public function removeEmployee(int $id):self;
 }
