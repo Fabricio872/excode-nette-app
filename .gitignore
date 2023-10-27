@@ -1,1 +1,5 @@
 config/local.neon
+vendor/
+.phpunit.result.cache
+.idea/
+test.xml

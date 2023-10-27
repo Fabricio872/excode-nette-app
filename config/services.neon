@@ -1,5 +1,17 @@
 services:
 	- App\Router\RouterFactory::createRouter
+	- App\Services\FileStorageService(%storageFile%, @Symfony\Component\Serializer\Serializer)
+	- Symfony\Component\Serializer\Serializer(
+			[
+				@Symfony\Component\Serializer\Normalizer\ObjectNormalizer,
+				@Symfony\Component\Serializer\Normalizer\ArrayDenormalizer
+			], [
+				@Symfony\Component\Serializer\Encoder\XmlEncoder
+			]
+		)
+	- Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+	- Symfony\Component\Serializer\Normalizer\ArrayDenormalizer
+	- Symfony\Component\Serializer\Encoder\XmlEncoder
 
 
 search:
