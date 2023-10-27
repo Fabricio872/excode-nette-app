@@ -18,6 +18,7 @@ final class RouterFactory
 		$router->addRoute('/', 'Employee:index');
 		$router->addRoute('/new', 'Employee:add');
 		$router->addRoute('/edit/<id>', 'Employee:edit');
+		$router->addRoute('/delete/<id>', 'Employee:delete');
 		return $router;
 	}
 }

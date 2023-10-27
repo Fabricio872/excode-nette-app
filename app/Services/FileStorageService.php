@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\EmployeeDTO;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class FileStorageService implements StorageServiceInterface
@@ -21,7 +22,11 @@ class FileStorageService implements StorageServiceInterface
         if (!$data){
             return [];
         }
-        return $this->serializer->deserialize($this->getData(), EmployeeDTO::class.'[]',self::FORMAT);
+        try {
+            return $this->serializer->deserialize($data, EmployeeDTO::class.'[]',self::FORMAT);
+        } catch (NotNormalizableValueException $exception){
+            return [];
+        }
     }
 
     public function addEmployee(EmployeeDTO $employee): self

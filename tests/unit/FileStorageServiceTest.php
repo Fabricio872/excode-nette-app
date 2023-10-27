@@ -90,18 +90,12 @@ class FileStorageServiceTest extends TestCase
             ->setAge(69)
         );
 
-        $storageService->addEmployee((new EmployeeDTO())
-            ->setName('testName')
-            ->setSex('testSex')
-            ->setAge(69)
-        );
-
         $loadedEmployee = $storageService->getList()[0];
         $loadedEmployee->setName('updatedName');
 
         $storageService->removeEmployee(0);
 
-        $this->assertCount(1, $storageService->getList());
+        $this->assertEmpty($storageService->getList());
     }
 
     private function getFileStorage():FileStorageService

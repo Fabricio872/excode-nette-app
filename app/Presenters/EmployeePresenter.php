@@ -32,6 +32,15 @@ final class EmployeePresenter extends Nette\Application\UI\Presenter
         $this->template->employee = $this->storageService->getList()[$id];
     }
 
+    public function renderDelete(int $id):void
+    {
+        $employee = $this->storageService->getList()[$id];
+        $this->storageService->removeEmployee($id);
+
+        $this->flashMessage(sprintf('Employee "%s" successfully deleted', $employee->getName()));
+        $this->redirect('Employee:index');
+    }
+
     protected function createComponentEmployeeAddForm(): Form
     {
         $form = $this->formFactory->create();
