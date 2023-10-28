@@ -3,14 +3,10 @@
 
 <div n:if="$employeeList" style="max-width: 1024px">
     {var $highestAge = $employeeList[0]->getAge()}
-    <dl>
-        <dd n:foreach="$employeeList as $employee" class="chart" style="width: {($employee->getAge() / $highestAge) * 100|noescape}%"><span class="text"> {$employee->getName()}: {$employee->getAge()} years </span></dd>
-    </dl>
+    <div class="progress mb-2" n:foreach="$employeeList as $employee">
+        <div class="progress-bar" role="progressbar" aria-label="Basic example"
+             style="width: {($employee->getAge() / $highestAge) * 100|noescape}%"
+             aria-valuenow="{($employee->getAge() / $highestAge) * 100|noescape}"
+             aria-valuemin="0" aria-valuemax="100"> {$employee->getName()}: {$employee->getAge()} years </div>
+    </div>
 </div>
-
-<style>
-    .chart {
-        display: block;
-        background-color: #3d9970;
-    }
-</style>

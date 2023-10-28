@@ -1,17 +1,29 @@
 {block content}
 <h1>Employee list</h1>
 
-<table n:if="$employeeList">
+
+<table class="table">
+    <thead>
     <tr>
-        <th>Name</th>
-        <th>Sex</th>
-        <th>Age</th>
-        <th>Action</th>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Sex</th>
+        <th scope="col">Age</th>
+        <th scope="col">Action</th>
     </tr>
+    </thead>
+    <tbody>
     <tr n:foreach="$employeeList as $id=>$employee">
+        <td scope="row">{$id}</td>
         <td>{$employee->getName()}</td>
         <td>{$employee->getSex()}</td>
         <td>{$employee->getAge()}</td>
-        <td><a n:href="Employee:edit $id">Edit</a><a n:href="Employee:delete $id">Delete</a></td>
+        <td>
+            <div class="btn-group">
+                <a n:href="Employee:edit $id" class="btn btn-primary">Edit</a>
+                <a n:href="Employee:delete $id" class="btn btn-danger">Delete</a>
+            </div>
+        </td>
     </tr>
+    </tbody>
 </table>
