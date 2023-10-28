@@ -1,0 +1,16 @@
+{block content}
+<h1>Employee Chart</h1>
+
+<div n:if="$employeeList" style="max-width: 1024px">
+    {var $highestAge = $employeeList[0]->getAge()}
+    <dl>
+        <dd n:foreach="$employeeList as $employee" class="chart" style="width: {($employee->getAge() / $highestAge) * 100|noescape}%"><span class="text"> {$employee->getName()}: {$employee->getAge()} years </span></dd>
+    </dl>
+</div>
+
+<style>
+    .chart {
+        display: block;
+        background-color: #3d9970;
+    }
+</style>

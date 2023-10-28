@@ -26,6 +26,16 @@ final class EmployeePresenter extends Nette\Application\UI\Presenter
         $this->template->employeeList = $this->storageService->getList();
     }
 
+    public function renderChart(): void
+    {
+        $employeeList = $this->storageService->getList();
+
+        usort($employeeList, function (EmployeeDTO $a, EmployeeDTO $b){
+            return $a->getAge()<=>$b;
+        });
+        $this->template->employeeList = $this->storageService->getList();
+    }
+
     public function renderEdit(int $id): void
     {
 

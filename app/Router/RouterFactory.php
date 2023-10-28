@@ -16,6 +16,7 @@ final class RouterFactory
 	{
 		$router = new RouteList;
 		$router->addRoute('/', 'Employee:index');
+		$router->addRoute('/chart', 'Employee:chart');
 		$router->addRoute('/new', 'Employee:add');
 		$router->addRoute('/edit/<id>', 'Employee:edit');
 		$router->addRoute('/delete/<id>', 'Employee:delete');
