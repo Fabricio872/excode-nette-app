@@ -10,7 +10,7 @@ class EmployeeDTO
 
     public string $sex;
 
-    public string $age;
+    public int $age;
 
     public function getName(): string
     {
@@ -34,12 +34,12 @@ class EmployeeDTO
         return $this;
     }
 
-    public function getAge(): string
+    public function getAge(): int
     {
         return $this->age;
     }
 
-    public function setAge(string $age): EmployeeDTO
+    public function setAge(int $age): EmployeeDTO
     {
         $this->age = $age;
         return $this;
