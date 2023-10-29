@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use Nette\Application\BadRequestException;
+use Nette\Application\Helpers;
 use Nette\Application\IPresenter;
 use Nette\Application\Request;
 use Nette\Application\Response;
-use Nette\Application\BadRequestException;
-use Nette\Application\Helpers;
-use Nette\Application\Responses\ForwardResponse;
 use Nette\Application\Responses\CallbackResponse;
+use Nette\Application\Responses\ForwardResponse;
+use Nette\Http;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
-use Nette;
-use Nette\Application\Responses;
-use Nette\Http;
 use Tracy\ILogger;
 
 /**

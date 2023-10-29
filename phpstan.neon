@@ -2,4 +2,6 @@ parameters:
 	level: 8
 	paths:
 		- app
+	excludePaths:
+	    - app/Presenters/Error*
 	checkGenericClassInNonGenericObjectType: false

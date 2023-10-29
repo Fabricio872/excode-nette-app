@@ -9,7 +9,7 @@ use Tomaj\Form\Renderer\BootstrapRenderer;
 
 class EmployeeFormFactory
 {
-    public function create()
+    public function create(): Form
     {
         $form = new Form();
         $form->setRenderer(new BootstrapRenderer());

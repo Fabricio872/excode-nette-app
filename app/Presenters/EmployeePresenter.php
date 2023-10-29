@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-use Nette\Application\UI\Presenter;
 use App\DTO\EmployeeDTO;
 use App\Forms\EmployeeFormFactory;
 use App\Services\FileStorageService;
-use Nette;
 use Nette\Application\UI\Form;
+use Nette\Application\UI\Presenter;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 final class EmployeePresenter extends Presenter
@@ -30,7 +29,7 @@ final class EmployeePresenter extends Presenter
     {
         $employeeList = $this->storageService->getList();
 
-        usort($employeeList, fn(EmployeeDTO $a, EmployeeDTO $b) => $b->getAge() <=> $a->getAge());
+        usort($employeeList, fn (EmployeeDTO $a, EmployeeDTO $b) => $b->getAge() <=> $a->getAge());
         $this->template->employeeList = $employeeList;
     }
 
@@ -65,7 +64,10 @@ final class EmployeePresenter extends Presenter
         return $form;
     }
 
-    public function formAddSucceeded(Form $form, $data): void
+    /**
+     * @param array<string, string|int> $data
+     */
+    public function formAddSucceeded(Form $form, array $data): void
     {
         $employee = $this->normalizer->denormalize($data, EmployeeDTO::class);
         $this->storageService->addEmployee($employee);
@@ -74,7 +76,10 @@ final class EmployeePresenter extends Presenter
         $this->redirect('Employee:index');
     }
 
-    public function formEditSucceeded(Form $form, $data): void
+    /**
+     * @param array<string, string|int> $data
+     */
+    public function formEditSucceeded(Form $form, array $data): void
     {
         $employee = $this->normalizer->denormalize($data, EmployeeDTO::class);
         $this->storageService->editEmployee((int) $this->request->getParameter('id'), $employee);

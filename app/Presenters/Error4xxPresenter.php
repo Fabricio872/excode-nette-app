@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-use Nette\Application\UI\Presenter;
-use Nette\Application\Request;
 use Nette\Application\BadRequestException;
-use Nette;
+use Nette\Application\Request;
+use Nette\Application\UI\Presenter;
 
 /**
  * Handles 4xx HTTP error responses.

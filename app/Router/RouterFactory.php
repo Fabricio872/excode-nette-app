@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Router;
 
-use Nette\StaticClass;
-use Nette;
 use Nette\Application\Routers\RouteList;
+use Nette\StaticClass;
 
 final class RouterFactory
 {

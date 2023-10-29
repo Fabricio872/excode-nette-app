@@ -75,6 +75,6 @@ class FileStorageService implements StorageServiceInterface
         if (! file_exists($this->storageFile)) {
             return null;
         }
-        return file_get_contents($this->storageFile);
+        return file_get_contents($this->storageFile) ?: null;
     }
 }
