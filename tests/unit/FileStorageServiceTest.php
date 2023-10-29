@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Services;
 
 use App\DTO\EmployeeDTO;
@@ -12,7 +14,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class FileStorageServiceTest extends TestCase
 {
-    const STORAGE_FILE = '/app/test.xml';
+    final public const STORAGE_FILE = '/app/test.xml';
 
     public function setUp(): void
     {
@@ -30,10 +32,11 @@ class FileStorageServiceTest extends TestCase
     {
         $storageService = $this->getFileStorage();
 
-        $storageService->addEmployee((new EmployeeDTO())
-            ->setName('testName')
-            ->setSex('testSex')
-            ->setAge(69)
+        $storageService->addEmployee(
+            (new EmployeeDTO())
+                ->setName('testName')
+                ->setSex('testSex')
+                ->setAge(69)
         );
 
         $this->assertNotEmpty($storageService->getList());
@@ -43,10 +46,11 @@ class FileStorageServiceTest extends TestCase
     {
         $storageService = $this->getFileStorage();
 
-        $storageService->addEmployee((new EmployeeDTO())
-            ->setName('testName')
-            ->setSex('testSex')
-            ->setAge(69)
+        $storageService->addEmployee(
+            (new EmployeeDTO())
+                ->setName('testName')
+                ->setSex('testSex')
+                ->setAge(69)
         );
 
         $loadedEmployee = $storageService->getList()[0];
@@ -61,10 +65,11 @@ class FileStorageServiceTest extends TestCase
     {
         $storageService = $this->getFileStorage();
 
-        $storageService->addEmployee((new EmployeeDTO())
-            ->setName('testName')
-            ->setSex('testSex')
-            ->setAge(69)
+        $storageService->addEmployee(
+            (new EmployeeDTO())
+                ->setName('testName')
+                ->setSex('testSex')
+                ->setAge(69)
         );
 
         $loadedEmployee = $storageService->getList()[0];
@@ -84,10 +89,11 @@ class FileStorageServiceTest extends TestCase
     {
         $storageService = $this->getFileStorage();
 
-        $storageService->addEmployee((new EmployeeDTO())
-            ->setName('testName')
-            ->setSex('testSex')
-            ->setAge(69)
+        $storageService->addEmployee(
+            (new EmployeeDTO())
+                ->setName('testName')
+                ->setSex('testSex')
+                ->setAge(69)
         );
 
         $loadedEmployee = $storageService->getList()[0];
@@ -98,7 +104,7 @@ class FileStorageServiceTest extends TestCase
         $this->assertEmpty($storageService->getList());
     }
 
-    private function getFileStorage():FileStorageService
+    private function getFileStorage(): FileStorageService
     {
         return new FileStorageService(
             self::STORAGE_FILE,

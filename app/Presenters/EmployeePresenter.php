@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use Nette\Application\UI\Presenter;
 use App\DTO\EmployeeDTO;
 use App\Forms\EmployeeFormFactory;
 use App\Services\FileStorageService;
@@ -11,14 +12,13 @@ use Nette;
 use Nette\Application\UI\Form;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-final class EmployeePresenter extends Nette\Application\UI\Presenter
+final class EmployeePresenter extends Presenter
 {
     public function __construct(
-        private FileStorageService $storageService,
-        private ObjectNormalizer   $normalizer,
-        private EmployeeFormFactory $formFactory
-    )
-    {
+        private readonly FileStorageService $storageService,
+        private readonly ObjectNormalizer   $normalizer,
+        private readonly EmployeeFormFactory $formFactory
+    ) {
     }
 
     public function renderIndex(): void
@@ -30,19 +30,16 @@ final class EmployeePresenter extends Nette\Application\UI\Presenter
     {
         $employeeList = $this->storageService->getList();
 
-        usort($employeeList, function (EmployeeDTO $a, EmployeeDTO $b){
-            return $b->getAge()<=>$a->getAge();
-        });
+        usort($employeeList, fn(EmployeeDTO $a, EmployeeDTO $b) => $b->getAge() <=> $a->getAge());
         $this->template->employeeList = $employeeList;
     }
 
     public function renderEdit(int $id): void
     {
-
         $this->template->employee = $this->storageService->getList()[$id];
     }
 
-    public function renderDelete(int $id):void
+    public function renderDelete(int $id): void
     {
         $employee = $this->storageService->getList()[$id];
         $this->storageService->removeEmployee($id);
@@ -55,7 +52,7 @@ final class EmployeePresenter extends Nette\Application\UI\Presenter
     {
         $form = $this->formFactory->create();
         // we can change the form, here for example we change the label on the button
-        $form->onSuccess[] = [$this, 'formAddSucceeded']; // and add handler
+        $form->onSuccess[] = $this->formAddSucceeded(...); // and add handler
         return $form;
     }
 
@@ -63,7 +60,7 @@ final class EmployeePresenter extends Nette\Application\UI\Presenter
     {
         $form = $this->formFactory->create();
         // we can change the form, here for example we change the label on the button
-        $form->onSuccess[] = [$this, 'formEditSucceeded']; // and add handler
+        $form->onSuccess[] = $this->formEditSucceeded(...); // and add handler
         $form->setDefaults($this->storageService->getList()[$this->request->getParameter('id')]);
         return $form;
     }
@@ -80,7 +77,7 @@ final class EmployeePresenter extends Nette\Application\UI\Presenter
     public function formEditSucceeded(Form $form, $data): void
     {
         $employee = $this->normalizer->denormalize($data, EmployeeDTO::class);
-        $this->storageService->editEmployee((int)$this->request->getParameter('id'), $employee);
+        $this->storageService->editEmployee((int) $this->request->getParameter('id'), $employee);
 
         $this->flashMessage(sprintf('Employee "%s" successfully edited', $employee->getName()));
         $this->redirect('Employee:index');

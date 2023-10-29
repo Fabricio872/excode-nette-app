@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\DTO\EmployeeDTO;
@@ -8,23 +10,23 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class FileStorageService implements StorageServiceInterface
 {
-    const FORMAT = 'xml';
+    final public const FORMAT = 'xml';
+
     public function __construct(
-        private string $storageFile,
-        private SerializerInterface $serializer
-    )
-    {
+        private readonly string $storageFile,
+        private readonly SerializerInterface $serializer
+    ) {
     }
 
     public function getList(): array
     {
         $data = $this->getData();
-        if (!$data){
+        if (! $data) {
             return [];
         }
         try {
-            return $this->serializer->deserialize($data, EmployeeDTO::class.'[]',self::FORMAT);
-        } catch (NotNormalizableValueException $exception){
+            return $this->serializer->deserialize($data, EmployeeDTO::class . '[]', self::FORMAT);
+        } catch (NotNormalizableValueException) {
             return [];
         }
     }
@@ -63,14 +65,14 @@ class FileStorageService implements StorageServiceInterface
      * @param array<int, EmployeeDTO> $employeeList
      * @return void
      */
-    private function saveList(array $employeeList):void
+    private function saveList(array $employeeList): void
     {
         file_put_contents($this->storageFile, $this->serializer->serialize($employeeList, self::FORMAT));
     }
 
-    private function getData():?string
+    private function getData(): ?string
     {
-        if (!file_exists($this->storageFile)){
+        if (! file_exists($this->storageFile)) {
             return null;
         }
         return file_get_contents($this->storageFile);
